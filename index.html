@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@300&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img.png" type="image/x-icon">
+    <title>Morphle Interview</title>
+
+    <style>
+        .inputTag {
+            margin-left: 70px;
+        }
+        .inputTag .button{
+            margin-left: 70px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: inline-flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+        }
+        .inputTag .button a {
+            padding: 0.8rem 3.2rem;
+            background: teal;
+            line-height: 3rem;
+            font-size: 1.5rem;
+            font-weight: lighter;
+            text-transform: capitalize;
+            color: #fff;
+            border: none;
+            -webkit-box-shadow: 0rem 0.8rem 1.5rem rgba(0, 0, 0, 0.1);
+            box-shadow: 0rem 0.8rem 1.5rem rgba(0, 0, 0, 0.1);
+            -webkit-transition: all 0.3s ease 0s;
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            border-radius: 4.5rem;
+            outline: none;
+        }
+        .inputTag .state {
+            margin-top: 20px;
+        }
+        .sample {
+            margin-top: 20px;
+            margin-left: 70px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-md bg-light navbar-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand font-weight-bold">Morphle Lab</a>
+            <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#collapsenavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+
+            <div class="collapse navbar-collapse text-center" id="collapsenavbar">
+                <ul class="navbar-nav ml-auto">
+                    Somya Prajapati!
+                </ul>
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class="container inputTag text-center">
+        <!-- <img src="img.png" alt="" /> -->
+        <h3>Enter the direction: <input type="text" name="direction" id="direction"/></h3>
+        <p>Type down, up, right, left....to order to traverse through the grid!!</p>
+        <div class="button" id="direction-btn" onclick="solve">
+            <a href="" alt="">Analyze</a>
+        </div>
+        <div class="state">
+            0: unvisited node, 
+            1: focussed node,
+            2: captured node,
+            -1: visited with no operations performed
+        </div>
+    </div>
+    <div class="sample text-center" id="grid-container">
+       
+    </div>
+
+<script>
+    let flag=0;
+    let prevData;
+    const AnalyzeButton = document.getElementById('direction-btn')
+    AnalyzeButton.addEventListener('click', solve)
+const gridContainer = document.getElementById('grid-container')
+const inputDirection = async(dir) => {
+   
+  await fetch(`http://localhost:3000/input?inp=${dir}`)
+    .then(response => console.log(response))
+    .catch(error => console.error(error))
+}
+
+function solve() {
+    let dir=document.getElementById("direction").value;
+    console.log(dir)
+    inputDirection(dir);
+}
+
+setInterval(async () => {
+    const parent = document.createElement('div')
+	let resultantData;   
+    await fetch('http://localhost:3000/getGrid').then((data) => (
+            data.json()
+        )).then((data) =>  {
+            resultantData = data
+            
+        })
+        if(flag){
+            flag=0;
+            gridContainer.innerHTML = "";
+        }
+        for(let data of resultantData){
+            let row_element = document.createElement("div")
+            row_element.className = 'd-flex flex-row '
+            for(let column of data){
+                let column_element = document.createElement("div")
+                column_element.className = 'm-2'
+                column_element.innerHTML = column
+                row_element.appendChild(column_element)
+            }
+            parent.appendChild(row_element)
+        }
+        gridContainer.appendChild(parent)
+        flag=1;             
+	}, 100)
+    
+</script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+<script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+<script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
