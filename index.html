@@ -35,7 +35,7 @@
             flex-direction: row;
         }
         .inputTag .button a {
-            padding: 0.8rem 3.2rem;
+            padding: 0.5rem 3rem;
             background: teal;
             line-height: 3rem;
             font-size: 1.5rem;
@@ -92,11 +92,30 @@
 
     <div class="container inputTag text-center">
         <!-- <img src="img.png" alt="" /> -->
-        <h3>Enter the direction: <input type="text" name="direction" id="direction"/></h3>
-        <p>Type down, up, right, left....to order to traverse through the grid!!</p>
-        <div class="button" id="direction-btn" onclick="solve">
-            <a href="" alt="">Analyze</a>
+        <h3>Choose the directions</h3>
+        
+        <p>Initial position is (0,0) ---> Analysis starting from the top-left corner</p>
+
+        <div class="button" id="direction-btn-left" onclick="solve_left">
+            <a href="" alt="">Analyze-Left</a>
         </div>
+
+        <div class="button" id="direction-btn-up" onclick="solve_up">
+            <a href="" alt="">Analyze-Up</a>
+        </div>
+
+
+        <div class="button" id="direction-btn-right" onclick="solve_right">
+            <a href="" alt="">Analyze-Right</a>
+        </div>
+
+
+        <div class="button" id="direction-btn-down" onclick="solve_down">
+            <a href="" alt="">Analyze-Down</a>
+        </div>
+
+       
+
         <div class="state">
             0: unvisited node, 
             1: focussed node,
@@ -111,8 +130,19 @@
 <script>
     let flag=0;
     let prevData;
-    const AnalyzeButton = document.getElementById('direction-btn')
-    AnalyzeButton.addEventListener('click', solve)
+
+    const AnalyzeButtonRight = document.getElementById('direction-btn-right')
+    AnalyzeButtonRight.addEventListener('click', solve_right)
+
+    const AnalyzeButtonLeft = document.getElementById('direction-btn-left')
+    AnalyzeButtonLeft.addEventListener('click', solve_left)
+
+    const AnalyzeButtonDown = document.getElementById('direction-btn-down')
+    AnalyzeButtonDown.addEventListener('click', solve_down)
+
+    const AnalyzeButtonUp = document.getElementById('direction-btn-up')
+    AnalyzeButtonUp.addEventListener('click', solve_up)
+
 const gridContainer = document.getElementById('grid-container')
 const inputDirection = async(dir) => {
    
@@ -121,11 +151,27 @@ const inputDirection = async(dir) => {
     .catch(error => console.error(error))
 }
 
-function solve() {
-    let dir=document.getElementById("direction").value;
-    console.log(dir)
+function solve_right(val) {
+    let dir = "right"
     inputDirection(dir);
 }
+
+function solve_left() {
+    let dir = "left"
+    inputDirection(dir);
+}
+
+function solve_down() {
+    let dir = "down"
+    inputDirection(dir);
+}
+
+function solve_up() {
+    let dir = "up"
+    inputDirection(dir);
+}
+
+
 
 setInterval(async () => {
     const parent = document.createElement('div')
